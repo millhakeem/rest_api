@@ -1,34 +1,23 @@
-import { ConfigService, registerAs } from '@nestjs/config';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { ConfigService } from '@nestjs/config';
+import { MongooseModuleOptions } from '@nestjs/mongoose';
 
-export const getMongoConfig = async (configService: ConfigService) => {
+export const getMongoConfig = async (
+	configService: ConfigService,
+): Promise<MongooseModuleOptions> => {
 	return {
 		uri: getMongoString(configService),
-		...getMongoOptions(),
 	};
 };
 
 const getMongoString = (configService: ConfigService) =>
-	'mongo://' +
-	configService.get('MONGO_LOGIN') +
+	'mongodb://' +
+	configService!.get('MONGO_LOGIN')! +
 	':' +
-	configService.get('MONGO_PASSWORD') +
+	configService!.get('MONGO_PASSWORD')! +
 	'@' +
-	configService.get('MONGO_LOGIN') +
+	configService!.get('MONGO_HOST')! +
 	':' +
-	configService.get('MONGO_PORT') +
+	configService!.get('MONGO_PORT')! +
 	'/' +
-	configService.get('MONGO_AUTHDATABASE');
-
-const getMongoOptions = () => ({
-	useNewUrlParser: true,
-	useCreateIndex: true,
-	useUnifiedTopology: true,
-});
-
-export default registerAs('database', () => ({
-	login: process.env.MONGO_LOGIN,
-	pass: process.env.MONGO_PASSWORD,
-	host: process.env.MONGO_LOGIN,
-	port: process.env.MONGO_PORT || 27017,
-	db: process.env.MONGO_AUTHDATABASE,
-}));
+	configService!.get('MONGO_AUTHDATABASE')!;
