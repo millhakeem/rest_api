@@ -11,11 +11,12 @@ import {
 	UsePipes,
 	ValidationPipe,
 } from '@nestjs/common';
-import { Product } from './product.model';
-import { FindProductDto } from './dto/find-product.dto';
+import { IdValidationPipe } from 'src/pipes/id-validation.pipe';
 import { CreateProductDto } from './dto/create-product.dto';
-import { ProductService } from './product.service';
+import { FindProductDto } from './dto/find-product.dto';
 import { PRODUCT_NOT_FOUND } from './product.const';
+import { Product } from './product.model';
+import { ProductService } from './product.service';
 
 @Controller('product')
 export class ProductController {
@@ -27,7 +28,7 @@ export class ProductController {
 	}
 
 	@Get(':id')
-	async get(@Param('id') id: string) {
+	async get(@Param('id', IdValidationPipe) id: string) {
 		const product = await this.productService.findProductById(id);
 
 		if (!product) {
@@ -38,7 +39,7 @@ export class ProductController {
 	}
 
 	@Delete(':id')
-	async delete(@Param('id') id: string) {
+	async delete(@Param('id', IdValidationPipe) id: string) {
 		const product = await this.productService.deleteProductById(id);
 
 		if (!product) {
@@ -47,7 +48,7 @@ export class ProductController {
 	}
 
 	@Patch(':id')
-	async patch(@Param('id') id: string, @Body() dto: Product) {
+	async patch(@Param('id', IdValidationPipe) id: string, @Body() dto: Product) {
 		const product = await this.productService.updateProductById(id, dto);
 
 		if (!product) {
