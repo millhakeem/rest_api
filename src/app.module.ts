@@ -9,6 +9,7 @@ import { ReviewModule } from './review/review.module';
 import { TopPageModule } from './top-page/top-page.module';
 import { getMongoConfig } from './config/mongo.config';
 import { FilesModule } from './files/files.module';
+import { SitemapModule } from './sitemap/sitemap.module';
 
 @Module({
 	imports: [
@@ -23,6 +24,7 @@ import { FilesModule } from './files/files.module';
 		ReviewModule,
 		TopPageModule,
 		FilesModule,
+		SitemapModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
